@@ -147,7 +147,8 @@ CGImageRef SVGImageCGImage(AppleNativeImageRef img)
             self.viewBox = SVGRectMake(0, 0, _width, _height);
         
         CGImageRef imageRef = SVGImageCGImage(image);
-        
+        BOOL cropped = NO;
+
         // apply preserveAspectRatio
         if( self.preserveAspectRatio.baseVal.align != SVG_PRESERVEASPECTRATIO_NONE
            && ABS( self.aspectRatioFromWidthPerHeight - self.aspectRatioFromViewBox) > 0.00001 )
@@ -164,17 +165,22 @@ CGImageRef SVGImageCGImage(AppleNativeImageRef img)
                 CGRect cropRect = CGRectMake(0, 0, image.size.width, image.size.height);
                 cropRect = [self clipFrame:cropRect fromRatio:1.0 / ratioOfRatios];
                 
-                CGImageRef croppedRef = CGImageCreateWithImageInRect(imageRef, cropRect);
-                CGImageRelease(imageRef);
-                imageRef = croppedRef;
+                imageRef = CGImageCreateWithImageInRect(imageRef, cropRect);
+                cropped = YES;
             }
         }
         
         /** transform our LOCAL path into ABSOLUTE space */
         frame = CGRectApplyAffineTransform(frame, [SVGHelperUtilities transformAbsoluteIncludingViewportForTransformableOrViewportEstablishingElement:self]);
         newLayer.frame = frame;
-        
-        newLayer.contents = (id)imageRef;
+
+        if (cropped)
+        {
+            newLayer.contents = [(id)imageRef autorelease];
+        }
+        else {
+            newLayer.contents = (id)imageRef;
+        }
 	}
 		
 #if OLD_CODE
