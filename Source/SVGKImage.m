@@ -48,6 +48,8 @@
 #pragma mark - UIImage methods cloned and re-implemented as SVG intelligent methods
 //NOT DEFINED: what is the scale for a SVGKImage? @property(nonatomic,readwrite) CGFloat            scale __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_4_0);
 
+@property (nonatomic, readwrite) BOOL observerForViewportExists;
+
 @end
 
 #pragma mark - main class
@@ -205,7 +207,7 @@ static NSMutableDictionary* globalSVGKImageCache;
 				   ^{
 					   SVGKParseResult* parsedSVG = [parser parseSynchronously];
 					   
-					   SVGKImage* finalImage = [[[SVGKImage alloc] initWithParsedSVG:parsedSVG fromSource:source] autorelease];
+					   SVGKImage* finalImage = [[SVGKImage alloc] initWithParsedSVG:parsedSVG fromSource:source];
 					   
 #if ENABLE_GLOBAL_IMAGE_CACHE_FOR_SVGKIMAGE_IMAGE_NAMED
 					   if( finalImage != nil )
@@ -286,10 +288,12 @@ static NSMutableDictionary* globalSVGKImageCache;
 		if ( self.DOMDocument == nil )
 		{
 			DDLogError(@"[%@] ERROR: failed to init SVGKImage with source = %@, returning nil from init methods. Parser warnings and errors = %@", [self class], parseSource, parseErrorsAndWarnings );
-			self = nil;
+      [super dealloc];
+			return nil;
 		}
-		
+
 		[self addObserver:self forKeyPath:@"DOMTree.viewport" options:NSKeyValueObservingOptionOld context:nil];
+    self.observerForViewportExists = YES;
 		//		[self.DOMTree addObserver:self forKeyPath:@"viewport" options:NSKeyValueObservingOptionOld context:nil];
 	}
     return self;
@@ -329,8 +333,10 @@ static NSMutableDictionary* globalSVGKImageCache;
         }
     }
 #endif
-	
-//SOMETIMES CRASHES IN APPLE CODE, CAN'T WORK OUT WHY:	[self removeObserver:self forKeyPath:@"DOMTree.viewport"];
+
+    if (self.observerForViewportExists) {
+        [self removeObserver:self forKeyPath:@"DOMTree.viewport"];
+    }
 	
     self.source = nil;
     self.parseErrorsAndWarnings = nil;
