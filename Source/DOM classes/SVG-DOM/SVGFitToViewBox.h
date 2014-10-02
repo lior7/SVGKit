@@ -15,6 +15,8 @@
 
 @protocol SVGFitToViewBox <NSObject>
 
+-(NSString*) getAttribute:(NSString*) name;
+
 @property (nonatomic) /* SVGAnimatedRect */ SVGRect viewBox;
 
 @property(nonatomic,retain) SVGAnimatedPreserveAspectRatio* preserveAspectRatio;
