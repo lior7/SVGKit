@@ -1017,14 +1017,21 @@
 
 - (NSString *)description
 {
-	return [@{@"filePath": self.filePath,
-		@"fileName": self.fileName,
-		@"fileAttributes": self.fileAttributes,
-		@"creationDate": self.creationDate,
-		@"modificationDate": self.modificationDate,
-		@"fileSize": @(self.fileSize),
-		@"age": @(self.age),
-		@"isArchived": @(self.isArchived)} description];
+  NSMutableDictionary *dictionary =
+      [[NSMutableDictionary alloc] initWithDictionary:@{@"filePath": self.filePath,
+                                                        @"fileName": self.fileName,
+                                                        @"fileAttributes": self.fileAttributes}];
+  if (self.creationDate) {
+    [dictionary setObject:self.creationDate forKey:@"creationDate"];
+  }
+  if (self.modificationDate) {
+    [dictionary setObject:self.modificationDate forKey:@"modificationDate"];
+  }
+  [dictionary setObject:@(self.fileSize) forKey:@"fileSize"];
+  [dictionary setObject:@(self.age) forKey:@"age"];
+  [dictionary setObject:@(self.isArchived) forKey:@"isArchived"];
+
+	return [dictionary description];
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
