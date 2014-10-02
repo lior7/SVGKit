@@ -379,7 +379,7 @@
             if( [dashArrayStringComponents count] > 1 )
             {
                 BOOL valid = NO;
-                NSMutableArray *dashArray = [[NSMutableArray alloc] init];
+                NSMutableArray *dashArray = [[[NSMutableArray alloc] init] autorelease];
                 for( NSString *n in dashArrayStringComponents ){
                     [dashArray addObject:[NSNumber numberWithFloat:[n floatValue]]];
                     if( !valid && [n floatValue] != 0 ){
