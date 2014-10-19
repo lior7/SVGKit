@@ -135,8 +135,23 @@ static NSMutableDictionary* globalSVGKImageCache;
 	return source;
 }
 
++(SVGKSource*) internalSourceAnywhereInBundleUsingPath:(NSString *)path
+{
+	return [SVGKSourceLocalFile sourceFromFilename:path];
+}
+
 + (SVGKImage *)imageNamed:(NSString *)name
-{	
+{
+  return [[self class] imageNamed:name isPath:NO];
+}
+
++ (SVGKImage *)imageAtPathNamed:(NSString *)path
+{
+  return [[self class] imageNamed:path isPath:YES];
+}
+
++ (SVGKImage *)imageNamed:(NSString *)name isPath:(BOOL)isPath
+{
 #if ENABLE_GLOBAL_IMAGE_CACHE_FOR_SVGKIMAGE_IMAGE_NAMED
     if( globalSVGKImageCache == nil )
     {
@@ -150,8 +165,13 @@ static NSMutableDictionary* globalSVGKImageCache;
         return cacheLine.mainInstance;
     }
 #endif
-	
-	SVGKSource* source = [self internalSourceAnywhereInBundleUsingName:name];
+
+  SVGKSource* source;
+  if (isPath) {
+    source = [self internalSourceAnywhereInBundleUsingPath:name];
+  } else {
+    source = [self internalSourceAnywhereInBundleUsingName:name];
+  }
 	
 	/**
 	 Key moment: init and parse the SVGKImage

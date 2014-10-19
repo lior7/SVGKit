@@ -89,6 +89,7 @@ typedef void (^SVGKImageAsynchronousLoadingDelegate)(SVGKImage* loadedImage);
  - Creates an SVGKSource so that you can later inspect exactly where it found the file
  */
 + (SVGKImage *)imageNamed:(NSString *)name;
++ (SVGKImage *)imageAtPathNamed:(NSString *)path;
 /**
  Almost identical to imageNamed: except that it performs the parse in a separate thread.
  
