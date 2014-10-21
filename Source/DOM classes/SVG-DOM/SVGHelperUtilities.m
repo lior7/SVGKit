@@ -308,7 +308,14 @@
 +(CALayer *) newCALayerForPathBasedSVGElement:(SVGElement<SVGTransformable>*) svgElement withPath:(CGPathRef) pathRelative
 {
 	CAShapeLayer* _shapeLayer = [[CAShapeLayerWithHitTest layer] retain];
-	
+
+  /** Ensure that shape layer should be displayed at all. */
+  NSString* display = [svgElement cascadedValueForStylableProperty:@"display"];
+  if ([display isEqualToString:@"none"]) {
+    [_shapeLayer release];
+    return nil;
+  }
+
 	[self configureCALayer:_shapeLayer usingElement:svgElement];
 	
 	/** transform our LOCAL path into ABSOLUTE space */
