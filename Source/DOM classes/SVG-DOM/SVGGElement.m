@@ -12,7 +12,14 @@
 {
 	
 	CALayer* _layer = [[CALayerWithChildHitTest layer] retain];
-	
+
+  /** Ensure that invisible group layers are not added at all. */
+  NSString* display = [self cascadedValueForStylableProperty:@"display"];
+  if ([display isEqualToString:@"none"]) {
+    [_layer release];
+    return nil;
+  }
+
 	[SVGHelperUtilities configureCALayer:_layer usingElement:self];
 	
 	return _layer;
