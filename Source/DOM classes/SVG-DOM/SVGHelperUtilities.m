@@ -330,6 +330,7 @@
 
   /* Silently ignore paths taking up zero area. */
   if (!transformedPathBB.size.width || !transformedPathBB.size.height) {
+    [_shapeLayer release];
     return nil;
   }
 
