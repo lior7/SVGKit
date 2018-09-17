@@ -51,7 +51,7 @@ CGImageRef SVGImageCGImage(AppleNativeImageRef img)
 @synthesize href = _href;
 
 - (void)dealloc {
-    [_href release], _href = nil;
+    [_href release]; _href = nil;
 
     [super dealloc];
 }
