@@ -136,19 +136,13 @@ static float cachedDevicePixelsPerInch;
   NSString *platform = [NSString stringWithUTF8String:machine];
   free(machine);
 
-  if ( [platform hasPrefix:@"iPhone7,1"]
-      || [platform hasPrefix:@"iPhone8,2"]
-      || [platform hasPrefix:@"iPhone9,2"]
-      || [platform hasPrefix:@"iPhone9,4"]
-      || [platform hasPrefix:@"iPhone10"]
-      || [platform hasPrefix:@"iPhone11"]) {
-    return 401.0f;
+  if ( [platform hasPrefix:@"iPhone10,3"]
+      || [platform hasPrefix:@"iPhone10,6"]
+      || [platform hasPrefix:@"iPhone11,2"]
+      || [platform hasPrefix:@"iPhone11,4"]
+      || [platform hasPrefix:@"iPhone11,6"]) {
+    return 458.0f;
   }
-
-  if( [platform hasPrefix:@"iPhone1"]
-     || [platform hasPrefix:@"iPhone2"]
-     || [platform hasPrefix:@"iPhone3"])
-    return 163.0f;
 
   if( [platform hasPrefix:@"iPhone4"]
      || [platform hasPrefix:@"iPhone5"]
@@ -157,8 +151,26 @@ static float cachedDevicePixelsPerInch;
      || [platform hasPrefix:@"iPhone8,1"]
      || [platform hasPrefix:@"iPhone8,4"]
      || [platform hasPrefix:@"iPhone9,1"]
-     || [platform hasPrefix:@"iPhone9,3"]) {
+     || [platform hasPrefix:@"iPhone9,3"]
+     || [platform hasPrefix:@"iPhone10,1"]
+     || [platform hasPrefix:@"iPhone10,4"]
+     || [platform hasPrefix:@"iPhone11,8"]) {
     return 326.0f;
+  }
+
+  if ( [platform hasPrefix:@"iPhone7,1"]
+      || [platform hasPrefix:@"iPhone8,2"]
+      || [platform hasPrefix:@"iPhone9,2"]
+      || [platform hasPrefix:@"iPhone9,4"]
+      || [platform hasPrefix:@"iPhone10,2"]
+      || [platform hasPrefix:@"iPhone10,5"]) {
+    return 401.0f;
+  }
+
+  if( [platform hasPrefix:@"iPhone1"]
+     || [platform hasPrefix:@"iPhone2"]
+     || [platform hasPrefix:@"iPhone3"]) {
+    return 163.0f;
   }
 
   if( [platform hasPrefix:@"iPhone"]) // catch-all for higher-end devices not yet existing
